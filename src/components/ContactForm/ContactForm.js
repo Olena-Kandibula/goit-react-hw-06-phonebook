@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 
 import React, { useState } from 'react';
-import shortid from 'shortid';
 import s from '../ContactForm/ContactForm.module.css';
+
+import { connect } from 'react-redux';
+import * as actions from '../../redux/phonebook/phonebook-action';
 
 function ContactForm({ onSubmit }) {
   const [name, setName] = useState('');
@@ -36,7 +38,7 @@ function ContactForm({ onSubmit }) {
     const newContact = {
       name: name,
       number: number,
-      id: shortid.generate(),
+      id: '',
     };
 
     onSubmit(newContact);
@@ -80,11 +82,15 @@ function ContactForm({ onSubmit }) {
       <input className={s.submitButton} type="submit" value="Add contact" />
     </form>
   );
-  // }
 }
 
 ContactForm.prototypes = {
   onSubmit: PropTypes.func,
 };
 
-export default ContactForm;
+const mapDispatchToProps = dispatch => ({
+  onSubmit: ({ name, number }) =>
+    dispatch(actions.addContact({ name, number })),
+});
+
+export default connect(null, mapDispatchToProps)(ContactForm);

@@ -2,9 +2,10 @@ import PropTypes from 'prop-types';
 import s from '../ContactList/ContactList.module.css';
 import { TiUserDeleteOutline } from 'react-icons/ti';
 
-function ContactList({ contacts, onDeleteContact }) {
-  console.log(contacts);
+import { connect } from 'react-redux';
+import * as actions from '../../redux/phonebook/phonebook-action';
 
+function ContactList({ contacts, onDeleteContact, filter }) {
   return (
     <div>
       <ul className={s.list}>
@@ -29,7 +30,35 @@ function ContactList({ contacts, onDeleteContact }) {
 }
 
 ContactList.propTypes = {
-  // contacts: PropTypes.array.isRequired,
+  contacts: PropTypes.array.isRequired,
   onDeleteContact: PropTypes.func,
 };
-export default ContactList;
+
+const getVisibleContacts = (allContacts, filter) => {
+  const normalizedFilter = filter.toLowerCase();
+
+  return allContacts.filter(contact =>
+    contact.name.toLowerCase().includes(normalizedFilter),
+  );
+};
+const mapStateToProps = ({ phoneBook: { contacts, filter } }) => ({
+  contacts: getVisibleContacts(contacts, filter),
+});
+
+// const mapStateToProps = state => {
+//   const { filter, contacts } = state.phoneBook;
+//   const normalizedFilter = filter.toLowerCase();
+//   const visibleContacts =  contacts.filter(contact =>
+//       contact.name.toLowerCase().includes(normalizedFilter),
+//   );
+
+//   return {
+//     contacts: visibleContacts,
+//   }
+// };
+
+const mapDispatchToProps = dispatch => ({
+  onDeleteContact: id => dispatch(actions.deleteContact(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactList);

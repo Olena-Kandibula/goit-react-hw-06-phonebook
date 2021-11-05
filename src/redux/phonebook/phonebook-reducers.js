@@ -5,19 +5,12 @@ import * as actions from './phonebook-action';
 import contactsJson from '../../contacts.json';
 
 const initialState =
-  JSON.parse(window.localStorage.getItem('contacts')) ?? contactsJson;
+  JSON.parse(localStorage.getItem('contacts')) ?? contactsJson;
 
-const addNewContact = (state, payload) => {
-  const newStateAdd = [payload, ...state];
-  window.localStorage.setItem('contacts', JSON.stringify(newStateAdd));
-  return newStateAdd;
-};
+const addNewContact = (state, payload) => [payload, ...state];
 
-const deleteContact = (state, payload) => {
-  const newStateDelete = state.filter(({ id }) => id !== payload);
-  window.localStorage.setItem('contacts', JSON.stringify(newStateDelete));
-  return newStateDelete;
-};
+const deleteContact = (state, payload) =>
+  state.filter(({ id }) => id !== payload);
 
 const contactsReducer = createReducer(initialState, {
   [actions.addContact]: (state, { payload }) => addNewContact(state, payload),

@@ -1,36 +1,39 @@
+import { createAction } from '@reduxjs/toolkit';
 import shortid from 'shortid';
-import phoneBookTypes from './phonebook-types';
 
-// const deleteContact = value => ({
-//   type: actions.DELETE,
-//   payload: value,
-// });
-
-export const addContact = ({ name, number }) => ({
-  type: phoneBookTypes.ADD,
+const addContact = createAction('phonebook/Add', ({ name, number }) => ({
   payload: {
     name: name,
     number: number,
     id: shortid.generate(),
   },
-});
+}));
 
-export const deleteContact = idContact => ({
-  type: phoneBookTypes.DELETE,
-  payload: idContact,
-});
+const deleteContact = createAction('phonebook/Delete');
+const changeFilter = createAction('filter/ChangeFilter');
 
-// export const selectContact = value => ({
-//     type: phoneBookTypes.SELECT,
-//     payload: value,
+export { addContact, deleteContact, changeFilter };
+
+// ===== react redux ============
+
+// import shortid from 'shortid';
+// import phoneBookTypes from './phonebook-types';
+
+// export const addContact = ({ name, number }) => ({
+//   type: phoneBookTypes.ADD,
+//   payload: {
+//     name: name,
+//     number: number,
+//     id: shortid.generate(),
+//   },
 // });
 
-// export const changeFilter = event => ({
+// export const deleteContact = idContact => ({
+//   type: phoneBookTypes.DELETE,
+//   payload: idContact,
+// });
+
+// export const changeFilter = value => ({
 //   type: phoneBookTypes.CHANGE_FILTER,
-//   payload: event.target.value,
+//   payload: value,
 // });
-
-export const changeFilter = value => ({
-  type: phoneBookTypes.CHANGE_FILTER,
-  payload: value,
-});

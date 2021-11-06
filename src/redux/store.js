@@ -12,7 +12,6 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
-import counterReducer from './counter/counter-reducers';
 import phoneBookReducer from './phonebook/phonebook-reducers';
 
 // console.log(process.env.NODE_ENV);//development OR PRODUCTION
@@ -33,7 +32,6 @@ const persistConfig = {
 
 const store = configureStore({
   reducer: {
-    counter: counterReducer,
     phoneBook: persistReducer(persistConfig, phoneBookReducer),
   },
   middleware: middleware,
